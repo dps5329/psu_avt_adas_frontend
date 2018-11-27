@@ -12,3 +12,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.car-logo {
+	display: flex;
+	justifyContent: center;
+	alignItems: center;
+	margin: 0 auto;
+}
+
+.container {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	justifyContent: flex-end;
+}
+
+
+
+
