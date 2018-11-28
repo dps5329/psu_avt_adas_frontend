@@ -6,7 +6,7 @@ const app = express();
 const dataStoreFile = "./data/detector.json";
 
 //Helper Methods
-function updateDetectorData(newData, outData){	
+function updateDetectorData(newData, outData){
 	let boxID = newData["id"];
 	let type = newData["type"];
 	//check if the data shoyld be reset
@@ -38,10 +38,11 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+//Endpoint to update detector bounding box info, used by the TX2
 app.post('/', function(req, res){
 	console.log(req.body);
 	let newDetectorData = req["body"];
-	
+
 	//Check if output file exists, create if it doesn't
 	if(!fs.existsSync(dataStoreFile)){
 		let baseDetectorObj = {"vehicle":[], "pedestrian":[]};
@@ -65,9 +66,19 @@ app.post('/', function(req, res){
 		});
 	});
 
-
 	res.send("Received");
 });
+
+//Responds with the detector bounding box data, used by the frontend
+app.get('/detectorData', (req, res) => {
+	fs.readFile(dataStoreFile, (err, data) =>{
+			if(err) res.send({'error':err});
+			else{
+				res.send(data);
+			}
+	});
+});
+
 
 
 //Run app on port

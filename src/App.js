@@ -1,47 +1,25 @@
 
 import React, { Component } from 'react';
 import Car from './car.png';
+import DetectorWindow from './DetectorWindow.js';
 
 class App extends Component {
-  render() {
+  constructor(props){
+    super(props);
+  }
 
+  render() {
     return (
-      <div>
+      <div className="app">
             <div className = 'container'>
+              <div className = "lane-left"/>
               <img src = {Car} className='car-logo'/>
+              <div className = "lane-right"/>
             </div>
+            <DetectorWindow/>
        </div>
     );
   }
 }
 
 export default App;
-
-/*import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
-
-export default App;*/
