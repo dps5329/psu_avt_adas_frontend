@@ -5,7 +5,9 @@ class DetectorWindow extends Component {
   constructor(props){
     super(props);
     this.state = {
-        detectorData: {'vehicle': [], 'pedestrian': []}
+        detectorData: {'vehicle': [], 'pedestrian': []},
+        detectorScaleWidthRatio: 800/1280, //Used to scale the image size used for detection on TX2 down to raspberry pi touch display size
+        detectorScaleHeightRatio: 480/720
     };
     this.fetchDetectorData = this.fetchDetectorData.bind(this);
   }
@@ -31,41 +33,39 @@ class DetectorWindow extends Component {
     });
   }
 
+  //Specifies the dimensions and position of the box
   calculateBoundingBoxStyle(box){
-    const width = box['bottomRightCoords'][0] - box['topLeftCoords'][0];
-    const height = box['bottomRightCoords'][1] - box['topLeftCoords'][1];
-    const top = box['topLeftCoords'][1];
-    const left = box['topLeftCoords'][0];
+    const top = box['topLeftCoords'][1]*this.state.detectorScaleHeightRatio;
+    const left = box['topLeftCoords'][0]*this.state.detectorScaleWidthRatio;
+    const width = (box['bottomRightCoords'][0] - box['topLeftCoords'][0])*this.state.detectorScaleWidthRatio;
+    const height = (box['bottomRightCoords'][1] - box['topLeftCoords'][1])*this.state.detectorScaleHeightRatio;
     return {
+      top: top,
+      left: left,
       width: width,
-      height: height,
-      marginTop: top,
-      marginLeft: left
+      height: height
     };
   }
 
   render() {
+    //Create divs for the
     const DetectionBoxes = ({detectorData}) => (
       <>
         {detectorData['vehicle'].map(vehicleBox => (
-          <div className="bounding-box-wrap">
+          <div className="bounding-box vehicle-box" style={this.calculateBoundingBoxStyle(vehicleBox)}>
             <p>Vehicle</p>
-            <div className="bounding-box" style={this.calculateBoundingBoxStyle(vehicleBox)}/>
           </div>
         ))}
         {detectorData['pedestrian'].map(pedBox => (
-          <div className="bounding-box-wrap">
-            <p>Pedestrian</p>
-            <div className="bounding-box" style={this.calculateBoundingBoxStyle(pedBox)}/>
+          <div className="bounding-box ped-box" style={this.calculateBoundingBoxStyle(pedBox)}>
+            <p>Ped</p>
           </div>
         ))}
       </>
     );
     return (
       <div className="detector-window">
-        <div className="vehicle-box">
           <DetectionBoxes detectorData={this.state.detectorData}/>
-        </div>
       </div>
     );
   }

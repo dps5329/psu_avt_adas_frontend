@@ -36,9 +36,21 @@ code {
 }
 
 .bounding-box{
-  border: 2px solid;
-  border-color: red;
+  position: absolute;
+  border: 3px solid;
+}
 
+.bounding-box p{
+  text-align: center;
+  font-weight: bold;
+}
+
+.vehicle-box{
+  border-color: #c04646;
+}
+
+.ped-box{
+  border-color: #4666c0;
 }
 
 .lane-left{
