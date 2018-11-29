@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const path = require("path");
 const fs = require("fs");
+const shell = require('shelljs');
 const app = express();
 const dataStoreFile = "./data/detector.json";
 
@@ -77,6 +78,20 @@ app.get('/detectorData', (req, res) => {
 				res.send(data);
 			}
 	});
+});
+
+//Starts or stops the detectnet-program on the TX2
+app.post('/detector/toggle', function(req, res){
+	console.log(req);
+	const turnDetectorOn = req['body']['detectorOn'];
+	if(turnDetectorOn){
+		//Run script to turn on detector
+		shell.exec('./scripts/start_tx2.sh');
+	}else{
+		//Run script to turn on detector
+		shell.exec('./scripts/stop_tx2.sh');
+	}
+	res.send({success: true});
 });
 
 

@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 //import Car from './car.png';
 import DetectorWindow from './DetectorWindow.js';
+import DetectorToggle from './DetectorToggle.js';
 
 class App extends Component {
   render() {
@@ -15,6 +16,7 @@ class App extends Component {
     return (
       <div className="app">
             <DetectorWindow/>
+            <DetectorToggle/>
       </div>
     );
   }
