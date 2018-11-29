@@ -10,7 +10,8 @@
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
     "react-scripts": "2.1.1",
-    "react-window-size": "^1.2.2"
+    "react-window-size": "^1.2.2",
+    "shelljs": "^0.8.3"
   },
   "scripts": {
     "start": "react-scripts start",
