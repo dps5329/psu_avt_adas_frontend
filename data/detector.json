@@ -1,27 +1,12 @@
-{
-  "vehicle": [
-    {
-      "type": "vehicle",
+{"vehicle":[],"pedestrian":[]}type": "vehicle",
       "id": 0,
       "topLeftCoords": [
-        45.641029,
-        333.691406
+        792.147461,
+        288.427734
       ],
       "bottomRightCoords": [
-        398.846191,
-        678.515625
-      ]
-    },
-    {
-      "type": "vehicle",
-      "id": 1,
-      "topLeftCoords": [
-        250.641029,
-        0.691406
-      ],
-      "bottomRightCoords": [
-        398.846191,
-        178.515625
+        890.961609,
+        359.355469
       ]
     }
   ],
@@ -30,12 +15,12 @@
       "type": "pedestrian",
       "id": 0,
       "topLeftCoords": [
-        750.641029,
-        0.691406
+        162.890625,
+        -13.095703
       ],
       "bottomRightCoords": [
-        798.846191,
-        278.515625
+        355.507812,
+        505.019531
       ]
     }
   ]

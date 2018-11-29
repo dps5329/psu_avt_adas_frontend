@@ -61,6 +61,8 @@ app.post('/', function(req, res){
 		//update and write the new data
 		detectorData = updateDetectorData(newDetectorData, detectorData);
 		let writeData = JSON.stringify(detectorData, null, 2); //pretty print
+		//Delete the file and write new data
+		shell.exec('rm '+dataStoreFile);
 		fs.writeFile(dataStoreFile, writeData, (err) => {
 			if(err) throw err;
 			console.log("wrote data to "+dataStoreFile+":\n"+writeData);
