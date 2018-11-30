@@ -27,7 +27,7 @@ class DetectorWindow extends Component {
       let data = resp['data'];
       if(data['error'] == true){
         console.log("ERROR");
-        console.log(resp['error']);
+        console.log(data);
       }else{
         this.setState({detectorData: data});
       }

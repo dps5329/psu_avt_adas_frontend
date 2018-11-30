@@ -10,7 +10,7 @@ const db = new datastore(/*{ filename: dataStoreFile }*/);
 //Helper Methods
 
 //Update outData with new info from newData
-function updateSingleDetectorData(newData, outData){
+function updateDetectorData(newData, outData){
 	let boxID = newData["id"];
 	let type = newData["type"];
 	//check if the data shoyld be reset
@@ -27,18 +27,21 @@ function updateSingleDetectorData(newData, outData){
 	}
 }
 
-function updateDetectorsData(newDetectorsData, outData){
+/*function updateDetectorsData(newDetectorsData, outData){
+	console.log("Updating detector data");
+	console.log(newDetectorsData);
+	console.log(outData);
 	//Update each detector
 	const keyVals = Object.keys(outData);
 	for(var keyI = 0; keyI < keyVals.length; keyI++){
 		let key = keyVals[keyI];
 		if(key in newDetectorsData){
 			for(var i = 0; i < newDetectorsData[key].length; i++){
-				updateSingleDetectorData(newDetectorsData[key][i], outData);
+				updateDetectorData(newDetectorsData[key][i], outData);
 			}
 		}
 	}
-}
+}*/
 
 //Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -67,7 +70,7 @@ app.post('/', function(req, res){
 		}else{
 			detectorObj = docs[0];
 		}
-		updateDetectorsData(newDetectorData, detectorObj);
+		updateDetectorData(newDetectorData, detectorObj);
 		db.update({type:"bounding-box"}, detectorObj, {upsert: true}, (err, numReplaces) => {
 			if(err) throw err;
 		});
@@ -89,7 +92,7 @@ app.get('/detectorData', (req, res) => {
 
 //Starts or stops the detectnet-program on the TX2
 app.post('/detector/toggle', function(req, res){
-	console.log(req);
+	console.log(req['body']);
 	const turnDetectorOn = req['body']['detectorOn'];
 	if(turnDetectorOn){
 		//Run script to turn on detector
