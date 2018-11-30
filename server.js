@@ -1,13 +1,16 @@
 const express = require('express');
 const bodyParser = require("body-parser");
 const path = require("path");
-const fs = require("fs");
 const shell = require('shelljs');
+const datastore = require('nedb');
+const db = new datastore();
 const app = express();
 const dataStoreFile = "./data/detector.json";
 
 //Helper Methods
-function updateDetectorData(newData, outData){
+
+//Update outData with new info from newData
+function updateSingleDetectorData(newData, outData){
 	let boxID = newData["id"];
 	let type = newData["type"];
 	//check if the data shoyld be reset
@@ -22,7 +25,19 @@ function updateDetectorData(newData, outData){
 			outData[type][boxID] = newData;
 		}
 	}
-	return outData;
+}
+
+function updateDetectorsData(newDetectorsData, outData){
+	//Update each detector
+	const keyVals = Object.keys(outData);
+	for(var keyI = 0; keyI < keyVals.length; keyI++){
+		let key = keyVals[keyI];
+		if(key in newDetectorsData){
+			for(var i = 0; i < newDetectorsData[key].length; i++){
+				updateSingleDetectorData(newDetectorsData[key][i], outData);
+			}
+		}
+	}
 }
 
 //Here we are configuring express to use body-parser as middle-ware.
@@ -41,31 +56,20 @@ app.get('/', function (req, res) {
 
 //Endpoint to update detector bounding box info, used by the TX2
 app.post('/', function(req, res){
-	console.log(req.body);
 	let newDetectorData = req["body"];
 
-	//Check if output file exists, create if it doesn't
-	if(!fs.existsSync(dataStoreFile)){
-		let baseDetectorObj = {"vehicle":[], "pedestrian":[]};
-		fs.writeFile(dataStoreFile, JSON.stringify(baseDetectorObj), function (err){
-			if(err) throw err;
-			console.log(dataStoreFile + " created successfully");
-		});
-	}
-
-	var detectorData;
-	fs.readFile(dataStoreFile, (err, data) => {
+	//Add/Update detector info
+	db.find({type: "bounding-box"}, (err, docs) => {
 		if(err) throw err;
-		console.log("Read: "+data);
-		detectorData = JSON.parse(data);
-		//update and write the new data
-		detectorData = updateDetectorData(newDetectorData, detectorData);
-		let writeData = JSON.stringify(detectorData, null, 2); //pretty print
-		//Delete the file and write new data
-		shell.exec('rm '+dataStoreFile);
-		fs.writeFile(dataStoreFile, writeData, (err) => {
+		var detectorObj;
+		if(docs.length == 0){
+			detectorObj = {type: "bounding-box", vehicle:[], pedestrian:[]};
+		}else{
+			detectorObj = docs[0];
+		}
+		updateDetectorsData(newDetectorData, detectorObj);
+		db.update({type:"bounding-box"}, detectorObj, {upsert: true}, (err, numReplaces) => {
 			if(err) throw err;
-			console.log("wrote data to "+dataStoreFile+":\n"+writeData);
 		});
 	});
 
@@ -74,10 +78,11 @@ app.post('/', function(req, res){
 
 //Responds with the detector bounding box data, used by the frontend
 app.get('/detectorData', (req, res) => {
-	fs.readFile(dataStoreFile, (err, data) =>{
-			if(err) res.send({'error':err});
+	//return detector data found in the database
+	db.find({type: "bounding-box"}, (err, docs) =>{
+			if(err || docs.length == 0) res.send({'error':err, msg: "The database may have found no results"});
 			else{
-				res.send(data);
+				res.send(docs[0]);
 			}
 	});
 });

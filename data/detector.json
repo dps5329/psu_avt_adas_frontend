@@ -1,4 +1,5 @@
-{"vehicle":[],"pedestrian":[]}type": "vehicle",
+{"vehicle": [
+    {
       "id": 0,
       "topLeftCoords": [
         792.147461,
