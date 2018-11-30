@@ -80,7 +80,7 @@ app.post('/', function(req, res){
 app.get('/detectorData', (req, res) => {
 	//return detector data found in the database
 	db.find({type: "bounding-box"}, (err, docs) => {
-			if(err || docs.length == 0) res.send({'error':err, msg: "The database may have found no results"});
+			if(err || docs.length == 0) res.send({'error':true, msg: "The database may have found no results"});
 			else{
 				res.send(docs[0]);
 			}
