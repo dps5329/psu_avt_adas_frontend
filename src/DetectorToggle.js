@@ -12,9 +12,8 @@ class DetectorToggle extends Component{
 
   clickHandler(){
     const prevDetectorState = this.state.detectorOn;
-    this.setState({detectorOn: !prevDetectorState});
     //If it was previously on then it should be turned off, vice versa
-    /*axios.post('/detector/toggle', {
+    axios.post('/detector/toggle', {
       detectorOn: !prevDetectorState
     })
     .then(function (response) {
@@ -22,7 +21,7 @@ class DetectorToggle extends Component{
     })
     .catch(function (error) {
       console.log(error);
-    });*/
+    });
   }
 
   render(){

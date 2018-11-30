@@ -24,11 +24,11 @@ class DetectorWindow extends Component {
   //Request to get the detector data from the proxy server (defined in server.js file)
   fetchDetectorData(){
     axios.get('/detectorData').then(resp => {
-      if('error' in resp){
+      if(resp['error'] != undefined){
         console.log("ERROR");
         console.log(resp['error']);
       }else{
-        this.setState({detectorData: resp.data});
+        this.setState({detectorData: resp['data']});
       }
     });
   }

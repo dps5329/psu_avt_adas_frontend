@@ -3,9 +3,9 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const shell = require('shelljs');
 const datastore = require('nedb');
-const db = new datastore();
 const app = express();
-const dataStoreFile = "./data/detector.json";
+const dataStoreFile = "./data/detectorDataStore";
+const db = new datastore(/*{ filename: dataStoreFile }*/);
 
 //Helper Methods
 
@@ -79,7 +79,7 @@ app.post('/', function(req, res){
 //Responds with the detector bounding box data, used by the frontend
 app.get('/detectorData', (req, res) => {
 	//return detector data found in the database
-	db.find({type: "bounding-box"}, (err, docs) =>{
+	db.find({type: "bounding-box"}, (err, docs) => {
 			if(err || docs.length == 0) res.send({'error':err, msg: "The database may have found no results"});
 			else{
 				res.send(docs[0]);
