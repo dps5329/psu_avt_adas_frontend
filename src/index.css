@@ -37,10 +37,8 @@ code {
 
 .detector-toggle{
   position: absolute;
-  top: 410px;
-  left: 270px;
   display:inline-block;
-  padding:0.15em 1.0em;
+  padding:0.15em 0.3em;
   border:0.1em solid #312138;
   border-radius:0.12em;
   box-sizing: border-box;

@@ -5,23 +5,32 @@ class DetectorToggle extends Component{
   constructor(props){
     super(props);
     this.state = {
-      detectorOn: false
+      detectorOn: false,
+      disabled: false
     }
     this.clickHandler = this.clickHandler.bind(this);
   }
 
   clickHandler(){
-    const prevDetectorState = this.state.detectorOn;
-    //If it was previously on then it should be turned off, vice versa
-    axios.post('/detector/toggle', {
-      detectorOn: !prevDetectorState
-    })
-    .then(function (response) {
-      this.setState({detectorOn: !prevDetectorState});
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    const buttonDisabled = this.state.disabled;
+    if(!buttonDisabled){	  
+	    const that = this;
+	    const newDetectorState = !that.state.detectorOn;
+	    //Disable button while processing
+	    that.setState({disabled: true});		  
+	    //If it was previously on then it should be turned off, vice versa
+	    axios.post('/detector/toggle', {
+	      detectorOn: newDetectorState
+	    })
+	    .then(function (response) {
+	      console.log("received response from detector/toggle. DetectorOn: ");
+	      console.log(newDetectorState);
+	      that.setState({detectorOn: newDetectorState, disabled: false});
+	    })
+	    .catch(function (error) {
+	      console.log(error);
+	    });
+    }
   }
 
   render(){

@@ -25,7 +25,7 @@ class DetectorWindow extends Component {
   fetchDetectorData(){
     axios.get('/detectorData').then(resp => {
       let data = resp['data'];
-      if(data['error'] == true){
+      if(data['error'] === true){
         console.log("ERROR");
         console.log(data);
       }else{

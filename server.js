@@ -96,10 +96,10 @@ app.post('/detector/toggle', function(req, res){
 	const turnDetectorOn = req['body']['detectorOn'];
 	if(turnDetectorOn){
 		//Run script to turn on detector
-		shell.exec('./scripts/start_tx2.sh');
+		shell.exec("./scripts/start_tx2.sh");
 	}else{
 		//Run script to turn on detector
-		shell.exec('./scripts/stop_tx2.sh');
+		shell.exec("./scripts/stop_tx2.sh");
 	}
 	res.send({success: true});
 });
