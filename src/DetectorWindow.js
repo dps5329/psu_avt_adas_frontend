@@ -6,8 +6,8 @@ class DetectorWindow extends Component {
     super(props);
     this.state = {
         detectorData: {'vehicle': [], 'pedestrian': []},
-        detectorScaleWidthRatio: 800/1280, //Used to scale the image size used for detection on TX2 down to raspberry pi touch display size
-        detectorScaleHeightRatio: 480/720
+        detectorScaleWidthRatio: 800/1920, //Used to scale the image size used for detection on TX2 down to raspberry pi touch display size
+        detectorScaleHeightRatio: 480/1080
     };
     this.fetchDetectorData = this.fetchDetectorData.bind(this);
   }
